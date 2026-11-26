@@ -1,5 +1,7 @@
 # ross_tcgp
 
+**English** · [Español](README.es.md)
+
 Read your **Pokémon TCG Pocket** collection straight from your Android phone
 and save it as a JSON file, from the terminal, for free, without typing a
 single card by hand.
@@ -42,6 +44,8 @@ your new packs takes seconds.
 | Read the copy count | The white number on the dark badge is cut into digits and each one is compared with templates of the game's font, no OCR engine needed | `counts.py` |
 | Walk the whole list | Each drag moves all visible rows but one; pages are glued together on that shared row (by card, not by pixels). The game hides the badges while scrolling, so every page is retaken until it is still and the badges are back | `scan.py` |
 | Save and compare | JSON snapshots with a diff against the previous one | `collection.py` |
+
+The reasoning behind every piece is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 Reprints (identical artwork in several sets, such as some trainers) can't be
 told apart from an image; they are stored under one id with the others listed

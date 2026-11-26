@@ -60,6 +60,18 @@ open an issue if yours doesn't.
 
 ## Install
 
+From [repo.rossmel.com](https://repo.rossmel.com/tcgp/) (signed packages; add the
+[repository](https://repo.rossmel.com/repository/) once):
+
+```bash
+sudo pacman -Syu ross-tcgp                          # Arch, CachyOS
+sudo apt update && sudo apt install ross-tcgp       # Ubuntu, Debian
+sudo dnf install ross-tcgp                          # Fedora
+ross-tcgp update   # downloads card data + images (~70 MB, once)
+```
+
+They use your system's Python, Pillow, NumPy and adb. From source:
+
 ```bash
 git clone https://github.com/rossmelabasto/ross_tcgp
 cd ross_tcgp

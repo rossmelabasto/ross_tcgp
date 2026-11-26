@@ -1,0 +1,43 @@
+# Packages for repo.rossmel.com, built by packaging/build.sh (VERSION and STAGE come from it).
+# One architecture-independent tree, three formats: deb, rpm and pacman.
+name: ross-tcgp
+arch: all
+platform: linux
+version: ${VERSION}
+release: 1
+section: games
+priority: optional
+maintainer: Rossmel Abasto <packages@rossmel.com>
+vendor: Rossmel Abasto
+homepage: https://repo.rossmel.com/tcgp/
+license: MIT
+description: |-
+  Read your Pokémon TCG Pocket collection from an Android phone over adb.
+  Scrolls the game's My Cards screen, recognises every card and its copy count,
+  and saves the collection as JSON with a diff against the previous scan. Fan project.
+
+contents:
+  - src: ${STAGE}/usr/lib/ross-tcgp
+    dst: /usr/lib/ross-tcgp
+    type: tree
+  - src: ${STAGE}/usr/bin/ross-tcgp
+    dst: /usr/bin/ross-tcgp
+    file_info: { mode: 0755 }
+  - src: ${STAGE}/usr/share/licenses/ross-tcgp/LICENSE
+    dst: /usr/share/licenses/ross-tcgp/LICENSE
+  - src: ${STAGE}/usr/share/doc/ross-tcgp/README.md
+    dst: /usr/share/doc/ross-tcgp/README.md
+
+overrides:
+  deb:
+    depends: [python3 (>= 3.10), python3-pil, python3-numpy, adb, ca-certificates]
+  rpm:
+    depends: [python3 >= 3.10, python3-pillow, python3-numpy, android-tools, ca-certificates]
+  archlinux:
+    depends: [python, python-pillow, python-numpy, android-tools, ca-certificates]
+
+deb:
+  compression: zstd
+rpm:
+  compression: zstd
+  summary: Read your Pokémon TCG Pocket collection from an Android phone over adb

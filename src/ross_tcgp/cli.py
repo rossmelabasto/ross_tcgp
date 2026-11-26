@@ -154,6 +154,38 @@ def cmd_show(args) -> int:
     return 0
 
 
+def cmd_export(args) -> int:
+    from datetime import date
+
+    from . import export
+
+    snap = collection.load(Path(args.file) if args.file else None)
+    if snap is None:
+        print("No scan yet: run `ross-tcgp scan` first.", file=sys.stderr)
+        return 1
+    fmt = args.format
+    unknown: list[str] = []
+    if fmt == "tcg-tracker":
+        print("Downloading the tracker's card list (ids change between versions, so always fresh)…")
+        text, unknown = export.to_tcg_tracker(snap)
+    else:
+        text = export.to_packprophet(snap)
+
+    name = "packprophet" if fmt == "csv" else fmt
+    out = Path(args.output) if args.output else Path.cwd() / f"ross-tcgp-{name}-{date.today():%Y%m%d}.csv"
+    out.write_text(text, encoding="utf-8")
+    owned = sum(1 for c in snap["cards"] if c.get("count", 0) > 0)
+    print(f"Wrote {out} ({owned} cards you own)")
+    if unknown:
+        print(f"  {len(unknown)} cards aren't in the tracker's list and were left out: {', '.join(unknown)}")
+    if fmt == "tcg-tracker":
+        print("Import it at https://tcgpocketcollectiontracker.com (log in → Import).")
+        print("Careful: importing REPLACES the collection you have there.")
+    else:
+        print("Import it at https://packprophet.spibane.com (Collection → Import), or open it in a spreadsheet.")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="ross-tcgp",
@@ -181,6 +213,14 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--name", help="only cards whose name contains this text")
     p.add_argument("--json", action="store_true", help="print the raw JSON")
     p.set_defaults(func=cmd_show)
+
+    p = sub.add_parser("export", help="save the collection for another tracker (CSV)")
+    p.add_argument("--format", "-f", choices=["csv", "packprophet", "tcg-tracker"], default="csv",
+                   help="csv/packprophet: PackProphet and spreadsheets (default); "
+                        "tcg-tracker: tcgpocketcollectiontracker.com")
+    p.add_argument("--output", "-o", help="file to write (default: ./ross-tcgp-<format>-<date>.csv)")
+    p.add_argument("--file", help="export this scan instead of the latest")
+    p.set_defaults(func=cmd_export)
 
     p = sub.add_parser("diff", help="compare two scans (default: OLD against the latest)")
     p.add_argument("old")

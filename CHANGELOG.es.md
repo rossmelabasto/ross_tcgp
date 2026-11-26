@@ -2,6 +2,14 @@
 
 Los cambios importantes del proyecto. Las versiones siguen [SemVer](https://semver.org/lang/es/).
 
+## [0.3.0] - 2026-11-26
+
+### Agregado
+- `ross-tcgp export`: un CSV para [PackProphet](https://packprophet.spibane.com) y planillas
+  (por defecto), o `--format tcg-tracker` para
+  [TCG Pocket Collection Tracker](https://tcgpocketcollectiontracker.com), traducido a los ids
+  propios de ese sitio con su lista de cartas descargada en el momento.
+
 ## [0.2.2] - 2026-11-26
 
 ### Corregido

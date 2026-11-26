@@ -64,7 +64,20 @@ ross-tcgp scan --quick     # solo lo nuevo (ordena por "Recent cards" en el jueg
 ross-tcgp show --name pika # lista lo que tienes
 ross-tcgp show --json      # el JSON crudo, para otras herramientas
 ross-tcgp diff VIEJO.json  # qué cambió desde un escaneo anterior
+ross-tcgp export           # CSV para PackProphet o una planilla
+ross-tcgp export -f tcg-tracker   # CSV para tcgpocketcollectiontracker.com
 ```
+
+### Usarla en otros trackers
+
+- **[PackProphet](https://packprophet.spibane.com)** (qué sobre abrir, progreso
+  por set): `ross-tcgp export` y luego *Collection → Import*. Corre en tu
+  navegador, sin cuenta, con vista previa antes de guardar.
+- **[TCG Pocket Collection Tracker](https://tcgpocketcollectiontracker.com)**
+  (intercambios, amigos): `ross-tcgp export -f tcg-tracker` y luego inicia sesión →
+  *Import*. Ese sitio usa sus propios ids, así que su lista de cartas se descarga
+  en cada exportación, y el archivo trae todas las cartas (tuyas o no) porque **su
+  importación reemplaza tu colección allá**.
 
 No toques el teléfono mientras escanea. Los escaneos quedan en
 `~/.local/share/ross_tcgp`; la caché de imágenes en `~/.cache/ross_tcgp`.

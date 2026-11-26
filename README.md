@@ -92,6 +92,8 @@ ross-tcgp show             # list the latest scan
 ross-tcgp show --name pika # filter by name
 ross-tcgp show --json      # raw JSON, e.g. to feed another tool
 ross-tcgp diff OLD.json    # compare an old scan with the latest
+ross-tcgp export           # CSV for PackProphet or a spreadsheet
+ross-tcgp export -f tcg-tracker   # CSV for tcgpocketcollectiontracker.com
 ross-tcgp update           # refresh card data after a new set comes out
 ```
 
@@ -117,6 +119,19 @@ exactly; a quick scan takes about 15 seconds.
 
 `uncertain` lists cards whose image or count was hard to read, so you can
 double-check them.
+
+### Use it in other trackers
+
+`ross-tcgp export` writes a CSV you can import elsewhere:
+
+- **[PackProphet](https://packprophet.spibane.com)** (which pack to open next,
+  set progress): `ross-tcgp export`, then *Collection → Import*. Runs in your
+  browser, no account, with a preview before saving.
+- **[TCG Pocket Collection Tracker](https://tcgpocketcollectiontracker.com)**
+  (trades, friends): `ross-tcgp export -f tcg-tracker`, then log in → *Import*.
+  That site uses its own card ids, so its card list is downloaded fresh on every
+  export, and the file lists every card (owned or not) because **its import
+  replaces your collection there**.
 
 ## Development
 

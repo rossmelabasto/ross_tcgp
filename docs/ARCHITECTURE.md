@@ -112,7 +112,20 @@ more copies and fewer copies.
 total the game shows, and a dozen hand-counted cards (Golbat 10, Eevee 15,
 Professor's Research 4, Magnemite 12…) all matched.
 
-## 8. Packages (`packaging/`)
+## 8. Exports (`export.py`)
+
+- **PackProphet / CSV:** `set,number,card_id,name,rarity,quantity`, owned cards
+  only. PackProphet numbers cards like flibustier (it accepts `A1-096` or
+  `A1-96`, `PROMO-A-1` or `P-A-1`), so nothing is translated.
+- **TCG Pocket Collection Tracker:** keyed by its own `InternalId`
+  (`expansion<<16 | number<<6 | rarity`, shared by reprints). Its `cards.json`
+  is downloaded on every export and our ids are translated (`A1-096` → `A1-96`,
+  `PROMO-A-001` → `P-A-1`). Checked on 2026-11-26: all 4,577 cards match by name
+  except the three negative-numbered `SP1` Mews, which are left out with a
+  warning. Every card is written (`Collected` TRUE/FALSE) because its import
+  overwrites the collection.
+
+## 9. Packages (`packaging/`)
 
 One architecture-independent package (`arch: all`) for deb, rpm and pacman, built
 with nfpm: the Python package in `/usr/lib/ross-tcgp`, a small `/usr/bin/ross-tcgp`

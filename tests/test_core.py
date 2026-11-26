@@ -98,3 +98,38 @@ def test_scan_never_touches_another_screen():
     result = scan(device, index)
     assert device.commands == []
     assert not result.entries() and "My Cards" in result.stopped_because
+
+
+def test_export_packprophet():
+    from ross_tcgp.export import to_packprophet
+
+    snap = {"cards": [
+        {"id": "A1-096", "set": "A1", "number": 96, "name": "Pikachu ex", "rarity": "RR", "count": 2},
+        {"id": "A1-001", "set": "A1", "number": 1, "name": "Bulbasaur", "rarity": "C", "count": 0},
+    ]}
+    lines = to_packprophet(snap).splitlines()
+    assert lines == ["set,number,card_id,name,rarity,quantity", "A1,96,A1-96,Pikachu ex,RR,2"]
+
+
+def test_export_tcg_tracker():
+    from ross_tcgp.export import to_tcg_tracker, tracker_id
+
+    assert tracker_id("A1-096") == "A1-96"
+    assert tracker_id("PROMO-A-001") == "P-A-1"
+    assert tracker_id("SP1--1") == "SP1--1"
+    tracker = [
+        {"card_id": "A1-1", "internal_id": 65600, "name": "Bulbasaur"},
+        {"card_id": "A4b-1", "internal_id": 65600, "name": "Bulbasaur"},  # reprint: same id
+        {"card_id": "P-A-1", "internal_id": 7, "name": "Potion"},
+        {"card_id": "A1-2", "internal_id": 8, "name": "Ivysaur"},
+    ]
+    snap = {"cards": [
+        {"id": "A1-001", "count": 3, "reprints": ["A4b-001"]},
+        {"id": "PROMO-A-001", "count": 1},
+        {"id": "SP1--1", "count": 1},
+    ]}
+    text, unknown = to_tcg_tracker(snap, tracker)
+    rows = [r.split(",") for r in text.splitlines()[1:]]
+    owned = {r[0]: (r[3], r[7]) for r in rows}
+    assert owned == {"A1-1": ("3", "TRUE"), "A4b-1": ("3", "TRUE"), "P-A-1": ("1", "TRUE"), "A1-2": ("0", "FALSE")}
+    assert unknown == ["SP1--1"]

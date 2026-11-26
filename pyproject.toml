@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ross_tcgp"
-version = "0.2.1"
+version = "0.2.2"
 description = "Read your Pokémon TCG Pocket collection from an Android phone over adb (fan project)"
 readme = "README.md"
 license = "MIT"

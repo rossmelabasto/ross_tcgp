@@ -17,9 +17,11 @@ description: |-
   and saves the collection as JSON with a diff against the previous scan. Fan project.
 
 contents:
-  - src: ${STAGE}/usr/lib/ross-tcgp
-    dst: /usr/lib/ross-tcgp
-    type: tree
+  # Files by glob, not `type: tree`: nfpm 2.48 writes tree directories into the pacman .MTREE
+  # as mode=20000000755 (Go's directory bit leaks in) and pacman then warns that "directory
+  # permissions differ". Directories nfpm creates on its own come out as a plain 755.
+  - src: ${STAGE}/usr/lib/ross-tcgp/ross_tcgp/*
+    dst: /usr/lib/ross-tcgp/ross_tcgp/
   - src: ${STAGE}/usr/bin/ross-tcgp
     dst: /usr/bin/ross-tcgp
     file_info: { mode: 0755 }

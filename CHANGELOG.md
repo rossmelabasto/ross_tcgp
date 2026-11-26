@@ -2,6 +2,12 @@
 
 All notable changes to this project. Versions follow [SemVer](https://semver.org/).
 
+## [0.2.2] - 2026-11-26
+
+### Fixed
+- pacman no longer warns "directory permissions differ" when installing or updating: the
+  package's directories are now recorded as a plain 755.
+
 ## [0.2.1] - 2026-11-26
 
 ### Fixed

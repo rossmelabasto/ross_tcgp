@@ -2,6 +2,13 @@
 
 Los cambios importantes del proyecto. Las versiones siguen [SemVer](https://semver.org/lang/es/).
 
+## [0.2.1] - 2026-11-26
+
+### Corregido
+- `scan` comprueba que la grilla de cartas esté en pantalla antes de tocar el teléfono; en
+  cualquier otra pantalla (una batalla, la tienda…) se detiene sin hacer scroll.
+- Un escaneo que no lee ninguna carta ya no guarda un archivo.
+
 ## [0.2.0] - 2026-11-26
 
 ### Agregado

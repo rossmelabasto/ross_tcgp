@@ -170,6 +170,11 @@ def scan(
     templates = counts.load_templates()
     result = ScanResult()
     img = device.screenshot()
+    # Never touch the phone unless the card grid is on screen: the game could be
+    # on any other screen (a battle, the shop…) and drags there do who knows what.
+    if not grid.find_slots(img):
+        result.stopped_because = "no card grid on screen: open 'My Cards' in the game"
+        return result
     if from_top:
         scroll_to_top(device, img)
     w, h = img.size

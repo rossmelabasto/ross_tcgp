@@ -111,6 +111,9 @@ def cmd_scan(args) -> int:
         progress=progress,
     )
     print(f"\n  stopped: {result.stopped_because}")
+    if not result.entries():
+        print("No cards were read, so nothing was saved.")
+        return 1
 
     mode = "quick" if quick else "full"
     snap = collection.build_snapshot(

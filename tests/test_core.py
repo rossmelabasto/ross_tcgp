@@ -71,3 +71,30 @@ def test_snapshot_and_diff():
     assert changes == {"A1-001": (1, 2), "A1-002": (0, 1)}
     quick = build_snapshot([e("A1-002", 2)], cards, "quick", base=new)
     assert quick["total"] == 4  # Bulbasaur kept from the base snapshot
+
+
+class FakeDevice:
+    """A phone stuck on a screen without the card grid (e.g. a battle)."""
+
+    def __init__(self):
+        self.commands = []
+
+    def screenshot(self):
+        return Image.new("RGB", (1080, 2340), (20, 30, 90))
+
+    def shell(self, command):
+        self.commands.append(command)
+        return ""
+
+    def drag(self, *args, **kwargs):
+        self.commands.append(("drag", args))
+
+
+def test_scan_never_touches_another_screen():
+    from ross_tcgp.scan import scan
+
+    device = FakeDevice()
+    index = Index(["a"], np.stack([fingerprint(Image.new("RGB", (208, 290), (1, 2, 3)))]))
+    result = scan(device, index)
+    assert device.commands == []
+    assert not result.entries() and "My Cards" in result.stopped_because

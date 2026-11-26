@@ -2,6 +2,13 @@
 
 All notable changes to this project. Versions follow [SemVer](https://semver.org/).
 
+## [0.2.1] - 2026-11-26
+
+### Fixed
+- `scan` checks that the card grid is on screen before touching the phone; on any other
+  screen (a battle, the shop…) it stops without scrolling.
+- A scan that reads no cards no longer saves a snapshot.
+
 ## [0.2.0] - 2026-11-26
 
 ### Added
